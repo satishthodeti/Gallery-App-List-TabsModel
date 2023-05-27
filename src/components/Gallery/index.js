@@ -1,5 +1,7 @@
-import {useState} from 'react'
+import {Component} from 'react'
+
 import ThumbnailItem from '../ThumbnailItem'
+
 import './index.css'
 
 const imagesList = [
@@ -73,39 +75,41 @@ const imagesList = [
   },
 ]
 
-const Gallery = () => {
-  const [activeImage, setActiveImage] = useState(
-    'https://assets.ccbp.in/frontend/react-js/nature-mountain-with-pond-img.png',
-  )
-  const [altText, setAltText] = useState('nature mountain with pond')
-
-  const changeImage = imageUrl => {
-    setActiveImage(imageUrl)
-    console.log('clicked')
+class Gallery extends Component {
+  state = {
+    activeThumbnailId: imagesList[0].id,
   }
 
-  const changeAltText = text => {
-    setAltText(text)
-    console.log(text)
+  setActiveThumbnailId = id => {
+    this.setState({
+      activeThumbnailId: id,
+    })
   }
 
-  return (
-    <div>
-      <img src={activeImage} alt={altText} />
-      <h1>Nature Photography</h1>
-      <p>Nature Photography by Rahul</p>
-      <ul>
-        {imagesList.map(each => (
-          <ThumbnailItem
-            changeAltText={changeAltText}
-            changeImage={changeImage}
-            imageDetails={each}
-            key={each.id}
-          />
-        ))}
-      </ul>
-    </div>
-  )
+  render() {
+    const {activeThumbnailId} = this.state
+    const {imageUrl, imageAltText} = imagesList[activeThumbnailId]
+
+    return (
+      <div className="app-container">
+        <div className="gallery-container">
+          <img src={imageUrl} className="selected-image" alt={imageAltText} />
+          <h1 className="heading">Nature Photography</h1>
+          <p className="description">Nature Photography by Rahul</p>
+          <ul className="thumbnails-list">
+            {imagesList.map(eachImage => (
+              <ThumbnailItem
+                key={eachImage.id}
+                imageDetails={eachImage}
+                isActive={activeThumbnailId === eachImage.id}
+                setActiveThumbnailId={this.setActiveThumbnailId}
+              />
+            ))}
+          </ul>
+        </div>
+      </div>
+    )
+  }
 }
 
 export default Gallery

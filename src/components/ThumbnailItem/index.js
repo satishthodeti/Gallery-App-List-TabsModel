@@ -1,18 +1,26 @@
 import './index.css'
 
 const ThumbnailItem = props => {
-  const {imageDetails, changeAltText, changeImage} = props
-  const {thumbnailUrl, imageAltText, imageUrl, thumbnailAltText} = imageDetails
+  const {imageDetails, isActive, setActiveThumbnailId} = props
+  const {thumbnailUrl, thumbnailAltText, id} = imageDetails
+  const thumbnailClassName = isActive ? `thumbnail active` : `thumbnail`
 
-  const handleClick = () => {
-    changeImage(imageUrl)
-    changeAltText(imageAltText)
+  const onClickThumbnail = () => {
+    setActiveThumbnailId(id)
   }
 
   return (
-    <li onClick={handleClick}>
-      <button type="button">
-        <img className="thumbnail" alt={thumbnailAltText} src={thumbnailUrl} />
+    <li className="thumbnail-list-item">
+      <button
+        type="button"
+        className="thumbnail-button"
+        onClick={onClickThumbnail}
+      >
+        <img
+          src={thumbnailUrl}
+          alt={thumbnailAltText}
+          className={thumbnailClassName}
+        />
       </button>
     </li>
   )
